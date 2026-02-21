@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "canisters": {
+    "registry_canister": {
+      "type": "rust",
+      "package": "registry_canister",
+      "candid": "candid/registry.did"
+    },
+    "compute_canister": {
+      "type": "rust",
+      "package": "compute_canister",
+      "candid": "candid/compute.did"
+    },
+    "anchor_canister": {
+      "type": "rust",
+      "package": "anchor_canister",
+      "candid": "candid/anchor.did"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "ic-wasm",
+      "args": "optimize"
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  }
+}

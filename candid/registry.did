@@ -1,0 +1,51 @@
+type JobStatus = variant { queued; running; done; failed: text };
+
+type JobRecord = record {
+  run_id: text;
+  input_sha256_hex: text;
+  commit_hash_hex: opt text;
+  status: JobStatus;
+  created_at_ns: nat64;
+  updated_at_ns: nat64;
+};
+
+type JobView = record {
+  record: JobRecord;
+  input: blob;
+  output: opt blob;
+};
+
+type RegistryMeta = record {
+  git_commit: text;
+  crate_version: text;
+  canister_version: nat64;
+  build_ts: text;
+};
+
+type AnchorStatus = variant { none; pending; broadcasted: text; confirmed: record { txid: text; confirmations: nat32; block_time: opt nat64 } ; failed: text };
+
+type AnchorRecord = record {
+  run_id: text;
+  anchor_commitment_hex: text;
+  kaspa_network: text;
+  status: AnchorStatus;
+  created_at_ns: nat64;
+  updated_at_ns: nat64;
+};
+
+service : {
+  submit_job: (record { input: blob }) -> (record { run_id: text });
+  get_job: (record { run_id: text }) -> (opt JobView) query;
+  list_jobs: (record { cursor: opt text; limit: nat32 }) -> (vec text) query;
+
+  set_result: (record { run_id: text; output: blob; commit_hash_hex: text }) -> (bool);
+
+  request_anchor: (record { run_id: text; kaspa_network: text }) -> (AnchorRecord);
+  get_anchor: (record { run_id: text }) -> (opt AnchorRecord) query;
+  set_anchor_result: (record { run_id: text; anchor_commitment_hex: text; status: AnchorStatus; }) -> (bool);
+
+  get_registry_meta: () -> (RegistryMeta) query;
+
+  set_compute_canister: (principal) -> ();
+  set_anchor_canister: (principal) -> ();
+}

@@ -1,0 +1,12 @@
+type AnchorRunResult = record { ok: bool; msg: text };
+
+type KaspaEndpoint = record {
+  base_url: text;      // e.g. https://your-proxy.example
+  api_key: opt text;   // optional
+};
+
+service : {
+  set_kaspa_endpoint: (KaspaEndpoint) -> ();
+  get_anchor_address: () -> (record { address_hint: text; pubkey_hex: text });
+  anchor_run: (record { run_id: text; kaspa_network: text }) -> (AnchorRunResult);
+}

@@ -1,0 +1,3 @@
+service : {
+  run_screening: (record { run_id: text }) -> (record { ok: bool; msg: text });
+}

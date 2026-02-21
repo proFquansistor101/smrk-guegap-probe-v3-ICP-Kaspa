@@ -1,0 +1,12 @@
+[workspace]
+resolver = "2"
+members = [
+  "src/registry_canister",
+  "src/compute_canister",
+  "src/anchor_canister",
+]
+
+[profile.release]
+lto = true
+opt-level = 'z'
+codegen-units = 1
